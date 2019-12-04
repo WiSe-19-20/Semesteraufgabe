@@ -6,6 +6,7 @@
 #include "playboard.h"
 #include "helpful.h"
 #include "koop.h"
+#include "win.h"
 
 void koop_play(void)
 {	
@@ -30,6 +31,12 @@ void koop_play(void)
 		controll = read_player_move(player[0]);
 		if (controll == 1) {
 			controll = set_playboard(playboard, player);
+			if(check_for_win(playboard)){
+				print_playboard(playboard);
+				printf("\n\n\t\t\tYou won %s", player[2]);
+				keypress();
+				break;
+			}
 			if (strcmp(player[2], name1) == 0) {
 				set_player(player, name2);
 				change_stone(player, playstone);
@@ -110,10 +117,10 @@ void set_stone(char player[][NAME], char playstone[], char name2[])
 			"\n\t\tIt must be different for each player!"
 			"\n\t\tFor fairness %s(Player2) can choose first: "
 			"\n\t\tChoose wisely the first legal symbol will be taken!!"
+			"\n\n\t\tEverything except ENTER and SPACE."
 			"\n\n\t\tYour choice %s: ", name2, name2);
 	c = getchar();
 	while (c == '\n' || c == 32) {
-		printf("\n\n\t\tEverything except ENTER and SPACE: ");
 		c = getchar();
 	}
 	buffer_clear();
@@ -121,10 +128,10 @@ void set_stone(char player[][NAME], char playstone[], char name2[])
 
 	printf("\n\t\t%s your choice was: %c."
 			"\n\t\tNow %s(Player1), remember you can't choose %c."
-			"\n\n\t\tYour choice %s: ", name2, playstone[1], player[2], playstone[1], player[2]);
+			"\n\n\t\tEverything except ENTER, SPACE and %c."
+			"\n\n\t\tYour choice %s: ", name2, playstone[1], player[2], playstone[1], playstone[1], player[2]);
 	c = getchar();
 	while (c == '\n' || c == 32 || c == playstone[1]) {
-		printf("\n\n\t\tEverything except ENTER, SPACE and %c: ", playstone[1]);
 		c = getchar();
 	}
 	buffer_clear();
